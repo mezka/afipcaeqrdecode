@@ -5,7 +5,7 @@ long_description = (Path(__file__).parent / "README.md").read_text()
 
 setup(
     name='afipcaeqrdecode',
-    version='0.0.1',
+    version='0.0.1b',
     packages=find_packages(),
     install_requires=[
         'Pillow==10.1.0',

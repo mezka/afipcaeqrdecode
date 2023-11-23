@@ -1,4 +1,4 @@
-[Github Link for PyPI](https://github.com/mezka/afip_invoice_extract_qr_cae_and_decode) | [PyPI python package](https://pypi.org/project/afipcaeqrdecode/)
+[Github Link for PyPI](https://github.com/mezka/afipcaeqrdecode) | [PyPI python package](https://pypi.org/project/afipcaeqrdecode/)
 
 # AFIP invoice pdf qr CAE extract and decode
 
