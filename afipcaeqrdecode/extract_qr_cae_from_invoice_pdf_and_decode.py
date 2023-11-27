@@ -28,7 +28,7 @@ def extract_qr_cae_from_invoice_pdf_and_decode(filepath):
         decoded_tuple = qreader.detect_and_decode(image_opencv)
         
         if decoded_tuple:
-            result = re.match('https:\/\/www\.afip\.gob\.ar\/fe\/qr\/\?p=(.*)', decoded_tuple[0])
+            result = re.match('https:\/\/(?:www\.)?afip\.gob\.ar\/fe\/qr\/\?p=(.*)', decoded_tuple[0])
 
             if result:
                 jwt_qr_url = result[1]
