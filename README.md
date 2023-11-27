@@ -20,7 +20,7 @@ This library used just [pyzbar](https://pypi.org/project/pyzbar/) in its incepti
 
 [qreader](https://pypi.org/project/qreader/) depends on [pyzbar](https://pypi.org/project/pyzbar/), but uses a pre-trained AI model to detect and segment QR codes, using information extracted by this AI model, it applies different image preprocessing techniques that heavily increase the decoding rate by [pyzbar](https://pypi.org/project/pyzbar/)
 
-## Example Usage
+## Example Usage and notes about metadata
 
 Using the included sample files for demonstration (and ran from repository root using included sample file):
 
@@ -35,7 +35,7 @@ Here, invoice metadata will evaluate to:
 ```python
 {
     "ver":1,
-    "fecha":"2023-02-10",
+    "fecha":"2023-02-10", #I've found this field to be missing in some decodes
     "cuit":30710145764,
     "ptoVta":4,
     "tipoCmp":1,
