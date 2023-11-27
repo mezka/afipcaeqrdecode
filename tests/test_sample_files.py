@@ -9,7 +9,7 @@ class TestAfipCaeExtractAndDecode(TestCase):
         filenames_and_expected_metadatas = [
             ('2000005044986390.pdf', '{"ver":1,"fecha":"2023-02-10","cuit":30710145764,"ptoVta":4,"tipoCmp":1,"nroCmp":25399,"importe":2460,"moneda":"PES","ctz":1,"tipoDocRec":80,"nroDocRec":30717336905,"tipoCodAut":"E","codAut":73064176949471}'),
             ('2000006916821032.pdf', '{"ver":"1","fecha":"2023-11-18","cuit":30715327712,"ptoVta":7,"tipoCmp":1,"nroCmp":34748,"importe":"13649.43","moneda":"PES","ctz":"1.00","tipoDocRec":80,"nroDocRec":30717336905,"tipoCodAut":"E","codAut":"73462509910160"}'),
-            {'2000006891852836.pdf', '{"ver":1,"cuit":33715334319,"ptoVta":20,"tipoCmp":1,"nroCmp":2083,"importe":13964.48,"moneda":"PES","ctz":1,"tipoDocRec":80,"nroDocRec":30717336905,"tipoCodAut":"E","codAut":73469264415216}'}
+            ('2000006891852836.pdf', '{"ver":1,"cuit":33715334319,"ptoVta":20,"tipoCmp":1,"nroCmp":2083,"importe":13964.48,"moneda":"PES","ctz":1,"tipoDocRec":80,"nroDocRec":30717336905,"tipoCodAut":"E","codAut":73469264415216}')
         ]
 
         for filename, expected_metadata in filenames_and_expected_metadatas:
