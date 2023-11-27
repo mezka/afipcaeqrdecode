@@ -29,9 +29,10 @@ def extract_qr_cae_from_invoice_pdf_and_decode(filepath):
         
         if decoded_tuple:
             result = re.match('https:\/\/www\.afip\.gob\.ar\/fe\/qr\/\?p=(.*)', decoded_tuple[0])
-            jwt_qr_url = result[1]
 
-            decoded_token = bytes.decode(jwt.utils.base64url_decode(jwt_qr_url))
-
-            return decoded_token.replace(' ','').replace('\r', '').replace('\n','').replace('\t', '')
+            if result:
+                jwt_qr_url = result[1]
+                decoded_token = bytes.decode(jwt.utils.base64url_decode(jwt_qr_url))
+                return decoded_token.replace(' ','').replace('\r', '').replace('\n','').replace('\t', '')
         
+    return None
