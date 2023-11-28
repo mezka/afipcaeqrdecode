@@ -2,9 +2,9 @@ from pdf2image import convert_from_path
 import numpy as np
 import cv2
 import tempfile
-from qreader import QReader
 import re
 import jwt
+from qreader import QReader
 
 qreader = QReader(model_size='l', min_confidence=0.5)
 

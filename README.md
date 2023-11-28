@@ -29,9 +29,9 @@ In its inception this library used just [pyzbar](https://pypi.org/project/pyzbar
 Using the included sample files for demonstration (and ran from repository root using included sample file):
 
 ```
-from afipcaeqrdecode import convert_pdf_to_image_and_detect_and_decode_qrs
+from afipcaeqrdecode import get_cae_metadata
 
-invoice_metadata = convert_pdf_to_image_and_detect_and_decode_qrs('./tests/sample_files/2000005044986390.pdf')
+invoice_metadata = get_cae_metadata('./tests/sample_files/2000005044986390.pdf')
 ```
 
 Here, invoice metadata will evaluate to:

@@ -7,7 +7,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='afipcaeqrdecode',
-    version='0.0.9',
+    version='0.0.10',
     packages=find_packages(),
     install_requires=requirements,
     description='Package to decode and extract invoice metadata from an AFIP CAE qr code link',
