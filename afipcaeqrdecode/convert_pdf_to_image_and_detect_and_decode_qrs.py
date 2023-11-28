@@ -21,7 +21,7 @@ def convert_pdf_to_image_and_detect_and_decode_qrs(filepath):
 
         for decoded_qr in decoded_qrs:
             if decoded_qr:
-                result = re.match('https:\/\/(?:www\.)?afip\.gob\.ar\/fe\/qr\/\?p=(.*)', decoded_qr)
+                result = re.match('https:\/\/(?:www\.)?afip\.gob\.ar\/fe\/qr\/?\?p=(.*)', decoded_qr)
 
                 if result:
                     jwt_qr_url = result[1]
