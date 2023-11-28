@@ -2,7 +2,7 @@
 
 # AFIP invoice pdf qr CAE extract and decode
 
-This is a python package that uses [PyMuPDF](https://pypi.org/project/PyMuPDF/) to dump images from your pdf invoices with an AFIP CAE QR code, and decodes them using [qreader](https://pypi.org/project/qreader/) in order to extract relevant invoice metadata like:
+This is a python package that uses [pdf2image](https://pypi.org/project/pdf2image/) to convert the first page of your AFIP invoice with an AFIP CAE QR code to an image, and then run [qreader](https://pypi.org/project/qreader/) on it in order to locate and decode the AFIP CAE QR code in order to extract relevant invoice metadata like: 
 
 - Invoice date
 - CUIT of invoice creator
@@ -14,9 +14,13 @@ This is a python package that uses [PyMuPDF](https://pypi.org/project/PyMuPDF/) 
 
 And other less important properties.
 
-## Why qreader instead of plain pyzbar
+## Why convert to image instead of extracting
 
-This library used just [pyzbar](https://pypi.org/project/pyzbar/) in its inception, however we came upon some QR codes that simply did not decode succesfully using just [pyzbar](https://pypi.org/project/pyzbar/).
+In its inception this library used [PyMuPDF](https://pypi.org/project/PyMuPDF/) in order to extract all images inside the invoices and then run [qreader](https://pypi.org/project/qreader/) on them, however, we came upon some invoices in which the qr code image failed to extract.
+
+## Why qreader instead of pyzbar
+
+In its inception this library used just [pyzbar](https://pypi.org/project/pyzbar/), however we came upon some QR codes which did not decode succesfully using just [pyzbar](https://pypi.org/project/pyzbar/).
 
 [qreader](https://pypi.org/project/qreader/) depends on [pyzbar](https://pypi.org/project/pyzbar/), but uses a pre-trained AI model to detect and segment QR codes, using information extracted by this AI model, it applies different image preprocessing techniques that heavily increase the decoding rate by [pyzbar](https://pypi.org/project/pyzbar/)
 
@@ -25,9 +29,9 @@ This library used just [pyzbar](https://pypi.org/project/pyzbar/) in its incepti
 Using the included sample files for demonstration (and ran from repository root using included sample file):
 
 ```
-from afipcaeqrdecode import extract_qr_cae_from_invoice_pdf_and_decode
+from afipcaeqrdecode import convert_pdf_to_image_and_detect_and_decode_qrs
 
-invoice_metadata = extract_qr_cae_from_invoice_pdf_and_decode('./tests/sample_files/2000005044986390.pdf')
+invoice_metadata = convert_pdf_to_image_and_detect_and_decode_qrs('./tests/sample_files/2000005044986390.pdf')
 ```
 
 Here, invoice metadata will evaluate to:
@@ -77,9 +81,6 @@ After installing system dependencies, you can install using the [PyPI python pac
 
 On first run [qreader](https://pypi.org/project/qreader/) will download the weights to run its QR detector AI model, then it will resume program operation automatically.
 
-## How does it work
-
-It dumps every image of the PDF invoice and then matches it with the format of the URL link that an AFIP CAE QR returns, if it matches it decodes it using `jwt.utils.base64url_decode`. If an invoice has more than one CAE QR code it will return the first one that decodes succesfully.
 
 ## WARNING
 

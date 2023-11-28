@@ -1,1 +1,1 @@
-from .extract_qr_cae_from_invoice_pdf_and_decode import extract_qr_cae_from_invoice_pdf_and_decode
+from .convert_pdf_to_image_and_detect_and_decode_qrs import convert_pdf_to_image_and_detect_and_decode_qrs
