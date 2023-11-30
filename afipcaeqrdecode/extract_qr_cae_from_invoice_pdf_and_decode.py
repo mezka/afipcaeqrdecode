@@ -25,8 +25,8 @@ def extract_qr_cae_from_invoice_pdf_and_decode(filepath):
         image_opencv = cv2.imdecode(image_np, cv2.IMREAD_COLOR)
 
         decoded_tuple = qreader.detect_and_decode(image_opencv)
-        
-        if decoded_tuple:
+
+        if decoded_tuple and decoded_tuple[0]:
             result = re.match('https:\/\/(?:www\.)?afip\.gob\.ar\/fe\/qr\/?\?p=(.*)', decoded_tuple[0])
 
             if result:

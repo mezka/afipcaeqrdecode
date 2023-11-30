@@ -13,7 +13,8 @@ class TestAfipCaeExtractAndDecode(TestCase):
             ('2000006883967990.pdf', '{"ver":1,"fecha":"2023-11-13","cuit":20340710062,"ptoVta":3,"tipoCmp":1,"nroCmp":438,"importe":18900.00,"moneda":"PES","ctz":1.0000,"tipoDocRec":80,"nroDocRec":30717336905,"tipoCodAut":"E","codAut":73462259065050}'),
             ('2000006882418578.pdf', '{"ver":1,"fecha":"2023-11-13","cuit":30715087738,"ptoVta":11,"tipoCmp":1,"nroCmp":1323,"importe":48899,"moneda":"PES","ctz":1,"tipoDocRec":80,"nroDocRec":30717336905,"tipoCodAut":"E","codAut":73468933099867}'),
             ('2000006835929544.pdf', '{"ver":1,"fecha":"2023-11-08","cuit":33590366329,"ptoVta":8,"tipoCmp":1,"nroCmp":7284,"importe":14178,"moneda":"PES","ctz":1,"tipoDocRec":80,"nroDocRec":30717336905,"tipoCodAut":"E","codAut":73459374223824}'),
-            ('2000006788971254.pdf', '{"ver":1,"fecha":"2023-10-31","cuit":20211152800,"ptoVta":8,"tipoCmp":1,"nroCmp":4273,"importe":622436.27,"moneda":"PES","ctz":1.0,"tipoDocRec":80,"nroDocRec":30717336905,"tipoCodAut":"E","codAut":73440405182735}')
+            ('2000006788971254.pdf', '{"ver":1,"fecha":"2023-10-31","cuit":20211152800,"ptoVta":8,"tipoCmp":1,"nroCmp":4273,"importe":622436.27,"moneda":"PES","ctz":1.0,"tipoDocRec":80,"nroDocRec":30717336905,"tipoCodAut":"E","codAut":73440405182735}'),
+            ('2000006846229610.pdf', '{"ver":1,"fecha":"2023-11-09","cuit":30695068286,"ptoVta":6,"tipoCmp":1,"nroCmp":118954,"importe":105978,"moneda":"PES","ctz":1,"tipoDocRec":80,"nroDocRec":30717336905,"tipoCodAut":"E","codAut":73456468252481}')
         ]
 
         for filename, expected_metadata in filenames_and_expected_metadatas:
