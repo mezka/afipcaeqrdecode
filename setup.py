@@ -7,12 +7,12 @@ with open('requirements.txt') as f:
 
 setup(
     name='afipcaeqrdecode',
-    version='0.0.12',
+    version='0.0.13',
     packages=find_packages(),
     install_requires=requirements,
     description='Package to decode and extract invoice metadata from an AFIP CAE qr code link',
     author='Emiliano Mesquita',
-    license='GPLv3',
+    license='LGPLv3',
     url='https://github.com/mezka/afipcaeqrdecode',
     long_description=long_description,
     long_description_content_type='text/markdown'
