@@ -14,10 +14,6 @@ This is a python package that uses [pdf2image](https://pypi.org/project/pdf2imag
 
 And other less important properties.
 
-## Why convert to image instead of extracting
-
-In its inception this library used [PyMuPDF](https://pypi.org/project/PyMuPDF/) in order to extract all images inside the invoices and then run [qreader](https://pypi.org/project/qreader/) on them, however, we came upon some invoices in which the qr code image failed to extract.
-
 ## Why qreader instead of pyzbar
 
 In its inception this library used just [pyzbar](https://pypi.org/project/pyzbar/), however we came upon some QR codes which did not decode succesfully using just [pyzbar](https://pypi.org/project/pyzbar/).
@@ -55,6 +51,14 @@ Here, invoice metadata will evaluate to:
 
 #The actual output will not be pretty printed, it will be stripped of all whitespace and formatting characters
 ```
+
+## Salvaging bad QR code z-indexing on invoices, bad AFIP CAE urls, and bad JSON
+
+Some bad PDFs have other images overlapping on the AFIP CAE QR code, so we implemented a second run codepath that uses [PyMuPDF](https://pypi.org/project/PyMuPDF/) in order to extract all images inside the invoices and then run [qreader](https://pypi.org/project/qreader/) on them.
+
+In cases in which the construction of the AFIP CAE QR url was done incorrectly or have some parts missing, we try to decode anyways.
+
+We came upon many decoded metadatas with bad json that had to be repaired in the consumer application, with this in mind we included [json-repair] (https://pypi.org/project/json-repair/) by and turn it on by default.
 
 ## System Dependencies and their installation
 
