@@ -19,4 +19,4 @@ class TestAfipCaeExtractAndDecode(TestCase):
 
         for filename, expected_metadata in filenames_and_expected_metadatas:
             decoded_cae = get_cae_metadata(os.path.join(os.path.dirname(__file__), 'sample_files', filename))
-            self.assertIn(decoded_cae, expected_metadata)
+            self.assertEqual(decoded_cae, expected_metadata)
