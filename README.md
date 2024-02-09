@@ -97,5 +97,5 @@ Author: Emiliano Mesquita.
 
 ## License
 
-GNU GPLv3.
+GNU LGPLv3.
 
