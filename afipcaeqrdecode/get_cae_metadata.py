@@ -5,10 +5,19 @@ from .extract_images_from_invoice_pdf import extract_images_from_invoice_pdf
 from qreader import QReader
 import re
 
-qreader = QReader(model_size='l', min_confidence=0.7)
-regex_for_cae_jwt_querystring = re.compile('https:\/\/(?:www\.)?afip\.gob\.ar\/fe\/qr\/?\?p=(.*)')
+qreader = None
+regex_for_cae_jwt_querystring = re.compile(r'https://(?:www\.)?afip\.gob\.ar/fe/qr/?\?p=(.*)')
+
+def get_qreader():
+    global qreader
+
+    if qreader is None:
+        qreader = QReader(model_size='l', min_confidence=0.7)
+
+    return qreader
 
 def get_cae_metadata(filepath, attempt_to_repair_json=True):
+    qreader = get_qreader()
 
     #First attempt convert first page of pdf invoice to image and detect and decode method
     
@@ -30,3 +39,5 @@ def get_cae_metadata(filepath, attempt_to_repair_json=True):
                 matched = regex_for_cae_jwt_querystring.fullmatch(decoded_qr)
                 if matched:
                     return decode_cae_url(matched.group(1), attempt_to_repair_json=attempt_to_repair_json)
+
+    return None

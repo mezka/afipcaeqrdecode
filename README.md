@@ -1,105 +1,90 @@
-[PyPI python package](https://pypi.org/project/afipcaeqrdecode/)
+[PyPI package](https://pypi.org/project/afipcaeqrdecode/)
 
-# AFIP invoice pdf qr CAE extract and decode
+# AFIP invoice PDF QR CAE extract and decode
 
-This is a python package that uses [pdf2image](https://pypi.org/project/pdf2image/) to convert the first page of your AFIP invoice with an AFIP CAE QR code to an image, and then run [qreader](https://pypi.org/project/qreader/) on it in order to locate and decode the AFIP CAE QR code in order to extract relevant invoice metadata like: 
+`afipcaeqrdecode` extracts AFIP CAE invoice metadata from PDF invoices. It renders the first page of the PDF, locates the AFIP QR code, decodes the QR payload, and returns the decoded metadata as a Python `dict`.
 
-- Invoice date
-- CUIT of invoice creator
-- AFIP electronic invoice point of sale (Punto de venta)
-- Invoice number
-- Amount
-- Currency
-- CUIT of inovoice recipient
+## Installation
 
-And other less important properties.
-
-## Why qreader instead of pyzbar
-
-In its inception this library used just [pyzbar](https://pypi.org/project/pyzbar/), however we came upon some QR codes which did not decode succesfully using just [pyzbar](https://pypi.org/project/pyzbar/).
-
-[qreader](https://pypi.org/project/qreader/) depends on [pyzbar](https://pypi.org/project/pyzbar/), but uses a pre-trained AI model to detect and segment QR codes, using information extracted by this AI model, it applies different image preprocessing techniques that heavily increase the decoding rate by [pyzbar](https://pypi.org/project/pyzbar/)
-
-## Example Usage and notes about metadata
-
-Using the included sample files for demonstration (and ran from repository root using included sample file):
-
-```
-from afipcaeqrdecode import get_cae_metadata
-
-invoice_metadata = get_cae_metadata('./tests/sample_files/2000005044986390.pdf')
-```
-
-Here, invoice metadata will evaluate to:
-
-```python
-{
-    "ver":1,
-    "fecha":"2023-02-10", #I've found this field to be missing in some decodes
-    "cuit":30710145764,
-    "ptoVta":4,
-    "tipoCmp":1,
-    "nroCmp":25399,
-    "importe":2460,
-    "moneda":"PES",
-    "ctz":1,
-    "tipoDocRec":80,
-    "nroDocRec":30717336905,
-    "tipoCodAut":"E",
-    "codAut":73064176949471
-}
-
-#The actual output will not be pretty printed, it will be stripped of all whitespace and formatting characters
-```
-
-## Salvaging bad QR code z-indexing on invoices, bad AFIP CAE urls, and bad JSON
-
-Some bad PDFs have other images overlapping on the AFIP CAE QR code, so we implemented a second run codepath that uses [PyMuPDF](https://pypi.org/project/PyMuPDF/) in order to extract all images inside the invoices and then run [qreader](https://pypi.org/project/qreader/) on them.
-
-In cases in which the construction of the AFIP CAE QR url was done incorrectly or have some parts missing, we try to decode anyways.
-
-We came upon many decoded metadatas with bad json that had to be repaired in the consumer application, with this in mind we included [json-repair] (https://pypi.org/project/json-repair/) by and turn it on by default.
-
-## System Dependencies and their installation
-
-This package depends on [qreader](https://pypi.org/project/qreader/), which in turn depends on [pyzbar](https://pypi.org/project/pyzbar/), which in turn depends on the system library zbar [ZBar](https://zbar.sourceforge.net/)
-
-Check your OS documentation on what package to install to get ZBar working with pyzbar.
+This package depends on `qreader`, which depends on `pyzbar`, which depends on the system `zbar` library.
 
 On Linux (Ubuntu 22.04):
 
 `sudo apt-get install libzbar0`
 
-
-On Mac OS X:
+On macOS:
 
 `brew install zbar`
 
-## Installation using pip
-
-After installing system dependencies, you can install using the [PyPI python package](https://pypi.org/project/afipcaeqrdecode/)
+Then install the package:
 
 `pip install afipcaeqrdecode`
 
-## First run notice
+## Quick Start
 
-On first run [qreader](https://pypi.org/project/qreader/) will download the weights to run its QR detector AI model, then it will resume program operation automatically.
+```python
+from afipcaeqrdecode import get_cae_metadata
 
+invoice_metadata = get_cae_metadata("./tests/sample_files/2000005044986390.pdf")
+```
 
-## WARNING
+Example output:
 
-This is an experimental package, USE IN PRODUCTION AT YOUR OWN RISK.
+```python
+{
+    "ver": 1,
+    "fecha": "2023-02-10",
+    "cuit": 30710145764,
+    "ptoVta": 4,
+    "tipoCmp": 1,
+    "nroCmp": 25399,
+    "importe": 2460,
+    "moneda": "PES",
+    "ctz": 1,
+    "tipoDocRec": 80,
+    "nroDocRec": 30717336905,
+    "tipoCodAut": "E",
+    "codAut": 73064176949471,
+}
+```
 
-It is barely even tested, i'm sharing it so I can actually import it as a PyPI package in another project that consumes it.
+## Return Value
 
-## Credits
+`get_cae_metadata(filepath, attempt_to_repair_json=True)` returns:
 
-All the other library authors this package depends on.
-Facundo Mainere for helping with JWT decode.
+- a Python `dict` when AFIP QR metadata is decoded successfully
+- `None` when no AFIP QR metadata can be extracted
 
-Author: Emiliano Mesquita.
+The returned dictionary preserves the value types present in the decoded JSON payload. Some invoices encode numeric-looking values as JSON strings, and those values are preserved as strings.
+
+## How It Works
+
+The decoding flow has two stages:
+
+1. Render the first page of the PDF with [PyMuPDF](https://pypi.org/project/PyMuPDF/) and run [qreader](https://pypi.org/project/qreader/) on the resulting image.
+2. If that fails, extract embedded images from the first page and run `qreader` on those images as a fallback.
+
+If the AFIP QR payload contains malformed JSON, [json-repair](https://pypi.org/project/json-repair/) is used by default to repair it before parsing.
+
+## Why qreader instead of pyzbar
+
+Earlier versions of this project used only [pyzbar](https://pypi.org/project/pyzbar/). Some real-world AFIP invoice QRs did not decode reliably with `pyzbar` alone.
+
+`qreader` still uses `pyzbar` for decoding, but it first uses a trained QR detector and applies preprocessing strategies that improve decode rates on difficult images.
+
+## Notes and Limitations
+
+- On first run, `qreader` may download model weights before decoding.
+- Some invoices omit fields such as `fecha` in the QR payload.
+- This project is tested mainly with sample PDF integration tests in `tests/sample_files/`.
+- This package is still experimental. Use it carefully in production workloads.
+
+## Testing
+
+Run the sample-based integration test suite with:
+
+`python -m unittest tests.test_sample_files`
 
 ## License
 
-GNU LGPLv3.
-
+GNU Lesser General Public License v3.0 or later (`LGPL-3.0-or-later`). See `LICENSE`.

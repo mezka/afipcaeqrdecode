@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "afipcaeqrdecode"
+version = "1.0.0"
+description = "Package to decode and extract invoice metadata from an AFIP CAE qr code link"
+readme = "README.md"
+license = "LGPL-3.0-or-later"
+license-files = ["LICENSE"]
+authors = [
+  { name = "Emiliano Mesquita" },
+]
+dynamic = ["dependencies"]
+
+[project.urls]
+Homepage = "https://github.com/mezka/afipcaeqrdecode"
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[tool.setuptools.packages.find]
+include = ["afipcaeqrdecode*"]

@@ -1,4 +1,5 @@
 from unittest import TestCase
+import json
 import os
 from afipcaeqrdecode.get_cae_metadata import get_cae_metadata
 
@@ -52,5 +53,7 @@ class TestAfipCaeExtractAndDecode(TestCase):
         ]
 
         for filename, expected_metadata in filenames_and_expected_metadatas:
+            if expected_metadata is not None:
+                expected_metadata = json.loads(expected_metadata)
             decoded_cae = get_cae_metadata(os.path.join(os.path.dirname(__file__), 'sample_files', filename))
             self.assertEqual(decoded_cae, expected_metadata)
